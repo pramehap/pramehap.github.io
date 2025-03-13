@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>แบบฟอร์มจองห้องประชุม</title>
+  <style>
+    /* ---------- CSS พื้นฐานให้ดูสวยงาม ---------- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Kanit", sans-serif;
+      background: linear-gradient(to right, #edf2f4, #d9e9f5);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #03a9f4;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #333;
+    }
+    input[type="date"],
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-family: "Kanit", sans-serif;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #03a9f4;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0288d1;
+    }
+    #status {
+      margin-top: 15px;
+      font-weight: 500;
+      color: #f44336;
+      text-align: center;
+    }
+    /* ----- CSS สำหรับปรับแต่ง radio ให้ดูสวยงาม ----- */
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+    .radio-wrapper {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .radio-wrapper input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #03a9f4;
+      border-radius: 50%;
+      margin-right: 8px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .radio-wrapper input[type="radio"]:checked::before {
+      content: "";
+      display: block;
+      width: 12px;
+      height: 12px;
+      background-color: #03a9f4;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+    }
+    .radio-wrapper label {
+      cursor: pointer;
+      font-size: 16px;
+      margin: 0;
+    }
+    /* ----- CSS สำหรับจัด layout ให้อยู่ในบรรทัดเดียวกัน ----- */
+    .input-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 15px;
+    }
+    .input-group {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>แบบฟอร์มจองห้องประชุม</h1>
+    <form id="field-form">
+      <div class="input-group">
+        <label for="name">ชื่อ-นามสกุล:</label>
+        <input type="text" id="name" required>
+      </div> <br/>
+      
+      <div class="input-row">
+        <div class="input-group">
+          <label for="department">สังกัด:</label>
+          <input type="text" id="department" required>
+        </div>
+      <div class="input-group">
+          <label for="phone">เบอร์โทรศัพท์:</label>
+          <input type="text" id="phone" required>
+      </div>
+      </div>
+      
+      <div class="input-row">
+        <div class="input-group">
+          <label for="date1">ระหว่างวันที่:</label>
+          <input type="date" id="date1" required>
+        </div>
+        <div class="input-group">
+          <label for="date2">ถึงวันที่:</label>
+          <input type="date" id="date2" required>
+        </div>
+      </div>
+      
+      <!-- รวม count และ room ในบรรทัดเดียวกัน -->
+      <div class="input-row">
+        <div class="input-group">
+          <label for="count">จำนวนผู้อบรม:</label>
+          <input type="tel" id="count" required>
+        </div>
+        <div class="input-group">
+          <label>ต้องการห้องพักหรือไม่:</label>
+          <div class="radio-group">
+            <div class="radio-wrapper">
+              <input type="radio" id="room1" name="room" value="พัก">
+              <label for="room1">ต้องการ</label>
+            </div>
+            <div class="radio-wrapper">
+              <input type="radio" id="room2" name="room" value="ไม่พัก">
+              <label for="room2">ไม่ต้องการ</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" onclick="submitData()">บันทึกข้อมูล</button>
+    </form>
+
+    <div id="status"></div>
+  </div>
+
+  <script>
+    // ฟังก์ชัน Submit ข้อมูลด้วย google.script.run
+    function submitData() {
+      const name = document.getElementById('name').value;
+      const department = document.getElementById('department').value;
+      const phone = document.getElementById('phone').value;
+      const date1 = document.getElementById('date1').value;
+      const date2 = document.getElementById('date2').value;
+      const count = document.getElementById('count').value;
+      const roomElement = document.querySelector('input[name="room"]:checked');
+      const statusEl = document.getElementById('status');
+
+      if (!name || !department || !phone || !date1 || !date2 || !count || !roomElement) {
+        statusEl.style.color = 'red';
+        statusEl.textContent = 'กรุณากรอกข้อมูลให้ครบถ้วน';
+        return;
+      }
+      const room = roomElement.value;
+
+      google.script.run
+        .withSuccessHandler(function (result) {
+          if (result.status === 'success') {
+            statusEl.style.color = 'green';
+            statusEl.textContent = result.message || 'บันทึกสำเร็จ';
+            document.getElementById('field-form').reset();
+          } else {
+            statusEl.style.color = 'red';
+            statusEl.textContent = result.message || 'บันทึกไม่สำเร็จ';
+          }
+        })
+        .withFailureHandler(function (err) {
+          statusEl.style.color = 'red';
+          statusEl.textContent = 'เกิดข้อผิดพลาด: ' + err.message;
+        })
+        .submitFormData({
+          name: name,
+          department: department,
+          phone: phone,
+          date1: date1,
+          date2: date2,
+          count: count,
+          room: room
+        });
+    }
+  </script>
+</body>
+</html>
