@@ -6,7 +6,7 @@ function doGet(e) {
   
   function submitFormData(data) {
     try {
-      var sheet = SpreadsheetApp.openById("YOUR_SPREADSHEET_ID")
+      var sheet = SpreadsheetApp.openById("1V5W5JJMuPQyy6pqerd7saHh89HAeXUH6Tpfh52dpsQo/")
           .getSheetByName("Sheet1"); // เปลี่ยนชื่อชีตตามต้องการ
   
       sheet.appendRow([
